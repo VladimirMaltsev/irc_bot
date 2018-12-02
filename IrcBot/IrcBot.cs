@@ -101,6 +101,11 @@ internal class IrcBot
                     bytesSent = sender.Send(msg);
                 }
 
+                if (inputLine.Contains(_nick) && inputLine.Contains("magic"))
+                {
+                    DoMagic();
+                }
+
                 switch (splitInput[1])
                 {
                     case "001":
@@ -119,7 +124,19 @@ internal class IrcBot
            
     }
 
-    
+    void DoMagic()
+    {
+        byte[] msg;
+        int bytesSent;
+        msg = Encoding.UTF8.GetBytes("PRIVMSG " + _channel + " :Заглядываю в будущее...\r\n");
+        bytesSent = sender.Send(msg);
+        Thread.Sleep(500);
+        msg = Encoding.UTF8.GetBytes("PRIVMSG " + _channel + " :Секундочку, у меня для вас кое-что есть:\r\n");
+        bytesSent = sender.Send(msg);
+        Thread.Sleep(500);
+        msg = Encoding.UTF8.GetBytes("PRIVMSG " + _channel + " :" + lib.GetPrediction() + "\r\n");
+        bytesSent = sender.Send(msg);
+    }
 }
 
    
